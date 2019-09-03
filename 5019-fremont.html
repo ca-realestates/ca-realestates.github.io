@@ -1,43 +1,249 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <title>5019 Fremont Home Gallery</title>
-        <link rel="stylesheet" href="css/reset.css">
-		<link rel="stylesheet" href="css/reveal-3.8.0.css">
-        <link rel="stylesheet" href="css/theme/beige.css">
-        <style>
-            .reveal section img { background:none; border:none; box-shadow:none; }
-            .vertical {
-                -webkit-transform: rotate(-90deg);
-                -moz-transform: rotate(-90deg);
-                -ms-transform: rotate(-90deg);
-                -o-transform: rotate(-90deg);
-                transform: rotate(-90deg);
-            }
-        </style>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-                    <section class='horizontal' data-autoslide='5000' data-transition='fade' data-background-image='./img/5019-fremont/front.png'></section>
-				<section>Hello</section>
-				<section>Welcome</section>
-			</div>
-        </div>
-		<script src="js/reveal-3.8.0.js"></script>
-		<script>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>5019 Fremont Home Gallery</title>
+
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/beige.css">
+	<style>
+		.portrait-mode {
+			display: block;
+			visibility: visible;
+			color: red;
+			text-shadow: 1px 1px white;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section class='horizontal' data-transition='fade'
+				data-background-image='./assets/5019-fremont/front_v12.png'>
+			</section>
+			<section class='horizontal' data-autoslide="30000" data-transition='fade' data-background-video-muted
+				data-background-video='./assets/5019-fremont/coverr-street-view-overhead_v12.mp4'>
+			</section>
+			<section class='horizontal' data-transition='fade'
+				data-background-image='./assets/5019-fremont/test1_v12.jpg'>
+				<p>test 1</p>
+			</section>
+			<section class='horizontal' data-autoslide="15000" data-transition='fade' data-background-video-muted
+				data-background-video='./assets/5019-fremont/The-Crosswalk_v12.mp4'>
+			</section>
+			<section class='horizontal' data-transition='fade'
+				data-background-image='./assets/5019-fremont/test2_v12.jpg'>
+				<p>test 2</p>
+			</section>
+			<section class='horizontal' data-transition='fade'
+				data-background-image='./assets/5019-fremont/front_v12.jpg'>
+			</section>
+			<section class='horizontal' data-transition='fade'
+				data-background-image='./assets/5019-fremont/test3_v12.jpg'>
+				<p>test 3</p>
+			</section>
+			<section class='horizontal' data-transition='fade'
+				data-background-image='./assets/5019-fremont/test4_v12.jpg'>
+				<p>test 4</p>
+			</section>
+			<section>
+				<p>slide 5</p>
+			</section>
+		</div>
+	</div>
+
+	<script src="js/reveal.js"></script>
+	<script src="js/matchmedia.js"></script>
+	<script>
+
+		var autoSlideDuration = 2000;
+
+		document.addEventListener('DOMContentLoaded', (event) => {
+			setupMedia();
+			setupReveal();
+			setupOrientation();
+		})
+
+		/*
+		this depends on Reveal so it needs to be executed after reveal's initialization
+		*/
+		function setupOrientation() {
+			var mm = window.matchMedia("(orientation: portrait)")
+			//one off
+			handleOrientationChange(mm)
+			//detect event
+			mm.addListener(handleOrientationChange);
+		}
+
+		function handleOrientationChange(mql) {
+			Reveal.getSlides().forEach(i => {
+				var firstChild = i.firstChild;
+				if (mql.matches) {
+					if (firstChild.tagName !== "P") {
+						i.insertAdjacentHTML("afterbegin", "<div class='portrait-mode'>best viewed in landscape mode</div>")
+					}
+				} else {
+					if (firstChild.tagName === "DIV") {
+						i.removeChild(firstChild)
+					}
+				}
+			})
+		}
+		/*
+		make sure we use the appropriate media
+		*/
+		function setupMedia() {
+			var viewport;
+			if (window.matchMedia("only screen and (max-width: 480px)").matches) {
+				viewport = 4
+			}
+			if (window.matchMedia("only screen and (min-width: 480px)").matches) {
+				viewport = 4
+			}
+			if (window.matchMedia("only screen and (min-width: 768px)").matches) {
+				viewport = 7
+			}
+			if (window.matchMedia("only screen and (min-width: 992px)").matches) {
+				viewport = 9
+			}
+			if (window.matchMedia("only screen and (min-width: 1200px)").matches) {
+				viewport = 12
+			}
+
+			console.log("view port: " + viewport)
+			//fix up assets based on viewport for smaller screens, desktop is the default target
+			if (viewport != 12) {
+				document.querySelectorAll("section[data-background-image]").forEach(i => {
+					var url = i.getAttribute('data-background-image')
+					i.setAttribute('data-background-image', url.replace("_v12.", ("_v" + viewport + ".")))
+					console.log("changed from " + url + " to " + i.getAttribute('data-background-image'))
+				});
+
+				document.querySelectorAll("section[data-background-video]").forEach(i => {
+					var url = i.getAttribute('data-background-video')
+					i.setAttribute('data-background-video', url.replace("_v12.", ("_v" + viewport + ".")))
+					console.log("changed from " + url + " to " + i.getAttribute('data-background-video'))
+				});
+			}
+		}
+
+		function setupReveal() {
 			Reveal.initialize({
-				autoPlayMedia: true,
-				// autoSlide: autoSlide,
-				autoSlideStoppable: false,
-				controls: false,
-				progress: false,
-				history: false,
+				// Display presentation control arrows
+				controls: true,
+				// Help the user learn the controls by providing hints, for example by
+				// bouncing the down arrow when they first encounter a vertical slide
+				controlsTutorial: true,
+				// Determines where controls appear, "edges" or "bottom-right"
+				controlsLayout: 'bottom-right',
+				// Visibility rule for backwards navigation arrows; "faded", "hidden"
+				// or "visible"
+				controlsBackArrows: 'faded',
+				// Display a presentation progress bar
+				progress: true,
+				// Display the page number of the current slide
+				slideNumber: false,
+				// Add the current slide number to the URL hash so that reloading the
+				// page/copying the URL will return you to the same slide
+				hash: true,
+				// Push each slide change to the browser history. Implies `hash: true`
+				history: true,
+				// Enable keyboard shortcuts for navigation
+				keyboard: true,
+				// Enable the slide overview mode
+				overview: false,
+				// Vertical centering of slides
 				center: true,
-				transition: Reveal.getQueryHash().transition || 'none', // default/cube/page/concave/zoom/linear/fade/none
+				// Enables touch navigation on devices with touch input
+				touch: true,
+				// Loop the presentation
+				loop: true,
+				// Change the presentation direction to be RTL
+				rtl: false,
+				// See https://github.com/hakimel/reveal.js/#navigation-mode
+				navigationMode: 'default',
+				// Randomizes the order of slides each time the presentation loads
+				shuffle: false,
+				// Turns fragments on and off globally
+				fragments: true,
+				// Flags whether to include the current fragment in the URL,
+				// so that reloading brings you to the same fragment position
+				fragmentInURL: false,
+				// Flags if the presentation is running in an embedded mode,
+				// i.e. contained within a limited portion of the screen
+				embedded: false,
+				// Flags if we should show a help overlay when the questionmark
+				// key is pressed
+				help: false,
+				// Flags if speaker notes should be visible to all viewers
+				showNotes: false,
+				// Global override for autoplaying embedded media (video/audio/iframe)
+				// - null: Media will only autoplay if data-autoplay is present
+				// - true: All media will autoplay, regardless of individual setting
+				// - false: No media will autoplay, regardless of individual setting
+				autoPlayMedia: true,
+				// Global override for preloading lazy-loaded iframes
+				// - null: Iframes with data-src AND data-preload will be loaded when within
+				//   the viewDistance, iframes with only data-src will be loaded when visible
+				// - true: All iframes with data-src will be loaded when within the viewDistance
+				// - false: All iframes with data-src will be loaded only when visible
+				preloadIframes: null,
+				// Number of milliseconds between automatically proceeding to the
+				// next slide, disabled when set to 0, this value can be overwritten
+				// by using a data-autoslide attribute on your slides
+				autoSlide: autoSlideDuration,
+				// Stop auto-sliding after user input
+				autoSlideStoppable: true,
+				// Use this method for navigation when auto-sliding
+				autoSlideMethod: Reveal.navigateNext,
+				// Specify the average time in seconds that you think you will spend
+				// presenting each slide. This is used to show a pacing timer in the
+				// speaker view
+				defaultTiming: 120,
+				// Enable slide navigation via mouse wheel
+				mouseWheel: false,
+				// Hide cursor if inactive
+				hideInactiveCursor: true,
+				// Time before the cursor is hidden (in ms)
+				hideCursorTime: 5000,
+				// Hides the address bar on mobile devices
+				hideAddressBar: true,
+				// Opens links in an iframe preview overlay
+				// Add `data-preview-link` and `data-preview-link="false"` to customise each link
+				// individually
+				previewLinks: false,
+				// Transition style
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+				// Transition speed
+				transitionSpeed: 'default', // default/fast/slow
+				// Transition style for full page slide backgrounds
+				backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
+				// Number of slides away from the current that are visible
+				viewDistance: 3,
+				// Parallax background image
+				parallaxBackgroundImage: '', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+				// Parallax background size
+				parallaxBackgroundSize: '', // CSS syntax, e.g. "2100px 900px"
+
+				// Number of pixels to move the parallax background per slide
+				// - Calculated automatically unless specified
+				// - Set to 0 to disable movement along an axis
+				parallaxBackgroundHorizontal: null,
+				parallaxBackgroundVertical: null,
+
+				// The display mode that will be used to show slides
+				display: 'block'
 			});
-		</script>
-	</body>
+
+			Reveal.addEventListener('slidechanged', function (event) {
+				console.log(event);
+			});
+		}
+	</script>
+</body>
 </html>

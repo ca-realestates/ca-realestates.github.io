@@ -27,6 +27,7 @@
 				<ul>
 					<li>swipe to view more content</li>
 					<li>use landscape mode for better view</li>
+					<li>play or pause slide with bottom left icon</li>
 					<li>go ahead, and swipe...</li>
 				</ul>
 			</section>
@@ -252,6 +253,7 @@
 				//skip the first slide since it's instructional slide.
 				if (event.previousSlide.getAttribute("data-instructional") != null) {
 					event.previousSlide.remove()
+					Reveal.sync()
 				}
 			});
 		}

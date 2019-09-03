@@ -23,6 +23,13 @@
 <body>
 	<div class="reveal">
 		<div class="slides">
+			<section data-instructional class='horizontal' data-autoslide="15000" data-transition='fade'>
+				<ul>
+					<li>swipe to view more content</li>
+					<li>use landscape mode for better view</li>
+					<li>go ahead, and swipe...</li>
+				</ul>
+			</section>
 			<section class='horizontal' data-transition='fade'
 				data-background-image='./assets/5019-fremont/front_v12.png'>
 			</section>
@@ -62,6 +69,7 @@
 	<script>
 
 		var autoSlideDuration = 2000;
+		var viewedInstructionalSlide = false;
 
 		document.addEventListener('DOMContentLoaded', (event) => {
 			setupMedia();
@@ -241,9 +249,13 @@
 			});
 
 			Reveal.addEventListener('slidechanged', function (event) {
-				console.log(event);
+				//skip the first slide since it's instructional slide.
+				if (event.previousSlide.getAttribute("data-instructional") != null) {
+					event.previousSlide.remove()
+				}
 			});
 		}
 	</script>
 </body>
+
 </html>

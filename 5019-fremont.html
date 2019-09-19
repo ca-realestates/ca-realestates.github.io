@@ -23,7 +23,7 @@
 <body>
 	<div class="reveal">
 		<div class="slides">
-			<section data-instructional class='horizontal' data-autoslide="15000" data-transition='fade'>
+			<section data-instructional class='horizontal' data-autoslide="10000" data-transition='fade'>
 				<h1>5019 Yellowstone Park Drive</h1>
 				<ul>
 					<li>swipe or click to view more content</li>
@@ -317,6 +317,7 @@
 				if (event.previousSlide.getAttribute("data-instructional") != null) {
 					event.previousSlide.remove()
 					Reveal.sync()
+					Reveal.left()
 				}
 			});
 		}
